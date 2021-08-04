@@ -6,7 +6,7 @@ public class PlayerControllerX : MonoBehaviour
 {
     public bool gameOver;
 
-    public float floatForce = 8f;
+    public float floatForce = 4.5f;
     public float gravityModifier = 0.5f;
     private Rigidbody playerRb;
 
@@ -33,8 +33,9 @@ public class PlayerControllerX : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       
         // While space is pressed and player is low enough, float up
-        if (Input.GetKeyDown(KeyCode.Space))// && !gameOver
+        if (Input.GetKeyDown(KeyCode.Space) && playerRb.transform.position.y <= 10 && !gameOver)
         {
             playerRb.AddForce(Vector3.up * floatForce, ForceMode.Impulse);
         }
@@ -43,7 +44,7 @@ public class PlayerControllerX : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         // if player collides with bomb, explode and set gameOver to true
-        if (other.gameObject.CompareTag("Bomb"))
+        if (other.gameObject.CompareTag("Bomb") || other.gameObject.CompareTag("Ground"))
         {
             explosionParticle.Play();
             playerAudio.PlayOneShot(explodeSound, 1.0f);
